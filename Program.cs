@@ -4,40 +4,20 @@ namespace podzial_cienie
 {
     internal class Program
     {
-        //static int LagrangePoly(int x)
-        //{
-        //    return 7 * (int)Math.Pow(x, 2) + 8 * x + 11 % 13;
-        //}
-
         static BigInteger LagrangePoly(BigInteger x)
         {
-            //return 7 * (int)Math.Pow(x, 2) + 8 * x + 11 % 13;
             return x.Pow(2).Multiply(new BigInteger("7"))
                 .Add(x.Multiply(new BigInteger("8"))
                 .Add(new BigInteger("11").Mod(new BigInteger("13")))
                 );
         }
-        //public static int modInverse(int a, int n)
-        //{
-        //    return BigInteger.ValueOf(a + n).ModInverse(BigInteger.ValueOf(n)).IntValue;
-        //}
-
         public static BigInteger modInverse(BigInteger a, BigInteger n)
         {
             return a.Add(n).ModInverse(n);
         }
-
-        //public static int recreate(int p, int[] xi, int[] mi)
-        //{
-        //    return (
-        //           (mi[1] * (-xi[2] * modInverse(xi[1] - xi[2], p)) * (-xi[4] * modInverse(xi[1] - xi[4], p))) % p
-        //         + (mi[2] * (-xi[1] * modInverse(xi[2] - xi[1], p)) * (-xi[4] * modInverse(xi[2] - xi[4], p))) % p
-        //         + (mi[4] * (-xi[1] * modInverse(xi[4] - xi[1], p)) * (-xi[2] * modInverse(xi[4] - xi[2], p))) % p
-        //         ) % p;
-        //}
-
         public static BigInteger recreate(BigInteger p, BigInteger[] xi, BigInteger[] mi)
         {
+            // odwtorzenie sekretu z m2 - mi[1], m3 - mi[2], m5 - mi[4]
             BigInteger p1 = mi[1].Multiply((xi[2].Multiply(new BigInteger("-1")).Multiply(modInverse(xi[1].Subtract(xi[2]), p)).Multiply((xi[4].Multiply(new BigInteger("-1")).Multiply(modInverse(xi[1].Subtract(xi[4]), p)))))).Mod(p);
             BigInteger p2 = mi[2].Multiply((xi[1].Multiply(new BigInteger("-1")).Multiply(modInverse(xi[2].Subtract(xi[1]), p)).Multiply((xi[4].Multiply(new BigInteger("-1")).Multiply(modInverse(xi[2].Subtract(xi[4]), p)))))).Mod(p);
             BigInteger p3 = mi[4].Multiply((xi[1].Multiply(new BigInteger("-1")).Multiply(modInverse(xi[4].Subtract(xi[1]), p)).Multiply((xi[2].Multiply(new BigInteger("-1")).Multiply(modInverse(xi[4].Subtract(xi[2]), p)))))).Mod(p);
@@ -47,9 +27,13 @@ namespace podzial_cienie
         static void Main(string[] args)
         {
             BigInteger M = new BigInteger("11");
+            // n - ilosc cieni
             BigInteger n = new BigInteger("5");
+            // m - wartosc progowa
+            // ilosc stopni wielomianu lagrange'a do wygenerowania = wartosc progowa - 1, dla m = 3, wychodzi 2, dla m = 4 wychodzi 3
             BigInteger m = new BigInteger("3");
             BigInteger p = new BigInteger("13");
+            // a1 i a2 sa losowo wybrane
             BigInteger a1 = new BigInteger("8");
             BigInteger a2 = new BigInteger("7");
 
